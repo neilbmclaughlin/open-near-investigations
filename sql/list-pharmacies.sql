@@ -1,0 +1,3 @@
+SET NOCOUNT ON
+
+SELECT TOP 5 Number , Id FROM pharmacies FOR JSON PATH
