@@ -1,3 +1,5 @@
+SET QUOTED_IDENTIFIER ON
+
 DROP EXTERNAL DATA SOURCE MyAzureBlobStorage
 
 CREATE EXTERNAL DATA SOURCE MyAzureBlobStorage
@@ -9,9 +11,11 @@ IF OBJECT_ID('dbo.pharmacies', 'U') IS NOT NULL
 CREATE TABLE pharmacies (
     Id varchar(20),
     Name varchar(200),
+    Location Geography,
     CONSTRAINT PK_pharmacies PRIMARY KEY CLUSTERED (Id)
 );
 
+CREATE SPATIAL INDEX spatialidx ON pharmacies(Location);
 
 IF OBJECT_ID('dbo.sessions', 'U') IS NOT NULL
   DROP TABLE dbo.sessions; 

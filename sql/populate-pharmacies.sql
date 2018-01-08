@@ -1,30 +1,17 @@
+SET QUOTED_IDENTIFIER ON
 Declare @json nvarchar(max)
 
 SELECT @json = BulkColumn
 FROM OPENROWSET(BULK 'orgs/dev-pharmacy-data-201813.json', DATA_SOURCE = 'MyAzureBlobStorage', SINGLE_CLOB) as j
 
 TRUNCATE TABLE pharmacies;
-TRUNCATE TABLE sessions;
 
-INSERT INTO pharmacies
-SELECT * FROM  
+INSERT INTO pharmacies(Id, Name, Location)
+SELECT Id, Name, geography::STGeomFromText('POINT ('+ Lon + ' ' + Lat + ')', 4326) FROM  
  OPENJSON ( @json )  
 WITH (   
     Id varchar(20) '$._source.identifier',
-    Name varchar(200) '$._source.name'
+    Name varchar(200) '$._source.name',
+    Lat varchar(100) '$._source.location.coordinates[1]',
+    Lon varchar(100) '$._source.location.coordinates[0]'
 )
-
-INSERT INTO sessions
-SELECT Pharmacies.Id, Sessions.Opens, Sessions.Closes FROM  
- OPENJSON ( @json )  
-WITH (   
-    Id varchar(20) '$._source.identifier',
-    OpeningTimesAsOffset nvarchar(MAX) '$._source.openingTimesAsOffset' AS JSON
-) AS Pharmacies
-CROSS APPLY OPENJSON(Pharmacies.OpeningTimesAsOffset)
-WITH (
-  Opens integer '$.opens',
-  Closes integer '$.closes'
-) AS Sessions
-
-
