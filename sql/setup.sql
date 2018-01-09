@@ -12,7 +12,9 @@ CREATE TABLE pharmacies (
     Id varchar(20),
     Name varchar(200),
     Location Geography,
+    JsonDocument nvarchar(MAX)
     CONSTRAINT PK_pharmacies PRIMARY KEY CLUSTERED (Id)
+    CONSTRAINT [Content should be formatted as JSON] CHECK ( ISJSON( JsonDocument )> 0 )
 );
 
 CREATE SPATIAL INDEX spatialidx ON pharmacies(Location);
