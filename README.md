@@ -4,7 +4,7 @@ Place for creating scripts to test querying by proximity, openness and text matc
 
 ## Background
 
-This repo forms the basis for investigations into Azure technologies which are able to be used to query organisations by proximity to a location and openness. The technologies investigated were Azure Cosmos DB (SQL and MongDB API's) and Azure SQL server. The environment used for evaluation was my MSDN Azure subscription. For completeness I also included MongoDB queries which work in MongoDB 3.2 but are not yet supported in the Cosmos DB MongoDB API.
+This repo forms the basis for investigations into Azure technologies which are able to be used to query organisations by proximity to a location and openness. The technologies investigated were Azure Cosmos DB (SQL and MongoDB API's) and Azure SQL server. The environment used for evaluation was my MSDN Azure subscription. For completeness I also included MongoDB queries which work in MongoDB 3.2 but are not yet supported in the Cosmos DB MongoDB API.
 
 ## Findings
 
