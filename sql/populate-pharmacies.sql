@@ -2,12 +2,13 @@ SET QUOTED_IDENTIFIER ON
 Declare @json nvarchar(max)
 
 SELECT @json = BulkColumn
-FROM OPENROWSET(BULK 'orgs/dev-pharmacy-data-201813-10.json', DATA_SOURCE = 'MyAzureBlobStorage', SINGLE_CLOB) as j
+FROM OPENROWSET(BULK 'orgs/dev-pharmacy-data-201813-10000.json', DATA_SOURCE = 'MyAzureBlobStorage', SINGLE_CLOB) as j
 
 TRUNCATE TABLE pharmacies;
 
 INSERT INTO pharmacies(Id, Name, Location, JsonDocument)
-SELECT Id, Name, geography::STGeomFromText('POINT ('+ Lon + ' ' + Lat + ')', 4326), JsonDocument FROM  
+SELECT Id, Name, geography::STGeomFromText('POINT ('+ Lon + ' ' + Lat + ')', 4326), JsonDocument
+FROM  
  OPENJSON ( @json )  
 WITH (   
     Id varchar(20) '$.identifier',
